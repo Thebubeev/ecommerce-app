@@ -22,7 +22,8 @@ class Product extends Equatable {
     Product products = Product(
         name: snapshot['name'],
         category: snapshot['category'],
-        imageUrl: snapshot['imageUrl'],
+        imageUrl: snapshot['imageUrl'] ??
+            'https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg',
         price: snapshot['price'],
         isRecommended: snapshot['isRecommended'],
         isPopular: snapshot['isPopular']);

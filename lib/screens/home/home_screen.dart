@@ -30,7 +30,9 @@ class HomeScreen extends StatelessWidget {
         appBar: const CustomAppBar(
           title: 'Zero To Unicorn',
         ),
-        bottomNavigationBar: const CustomNavBar(screen: routeName,),
+        bottomNavigationBar: const CustomNavBar(
+          screen: routeName,
+        ),
         body: ListView(
           children: [
             BlocBuilder<CategoryBloc, CategoryState>(
@@ -68,7 +70,6 @@ class HomeScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 }
-
                 if (state is ProductLoaded) {
                   return ProductCarousel(
                     products: state.products

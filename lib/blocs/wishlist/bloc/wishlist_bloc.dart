@@ -10,9 +10,47 @@ part 'wishlist_event.dart';
 part 'wishlist_state.dart';
 
 class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
-  WishlistBloc() : super(WishlistLoading());
+  WishlistBloc() : super(WishlistLoading()) {
+    on<StarWishlist>((event, emit) async {
+      emit(WishlistLoading());
+      try {
+        await Future<void>.delayed(const Duration(seconds: 1));
+        emit(const WishlistLoaded());
+      } catch (_) {
+        emit(WishlistError());
+      }
+    });
 
-  @override
+    on<AddWishlist>((event, emit) {
+      final state = this.state;
+      if (state is WishlistLoaded) {
+        try {
+          emit(WishlistLoaded(
+              wishlist: Wishlist(
+                  products: List.from(state.wishlist.products)
+                    ..add(event.product))));
+        } on Exception {
+          emit(WishlistError());
+        }
+      }
+    });
+
+      on<RemoveWishlist>((event, emit) {
+      final state = this.state;
+      if (state is WishlistLoaded) {
+        try {
+          emit(WishlistLoaded(
+              wishlist: Wishlist(
+                  products: List.from(state.wishlist.products)
+                    ..remove(event.product))));
+        } on Exception {
+          emit(WishlistError());
+        }
+      }
+    });
+  }
+
+  /* @override
   Stream<WishlistState> mapEventToState(
     WishlistEvent event,
   ) async* {
@@ -67,5 +105,5 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         yield WishlistError();
       }
     }
-  }
+  } */
 }

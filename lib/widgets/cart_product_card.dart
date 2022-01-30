@@ -45,9 +45,7 @@ class CartProductCard extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        context
-                            .read<CartBloc>()
-                            .add(CartProductRemoved(product));
+                        context.read<CartBloc>().add(RemoveCart(product));
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 backgroundColor: Colors.red,
@@ -63,7 +61,7 @@ class CartProductCard extends StatelessWidget {
                   ),
                   IconButton(
                       onPressed: () {
-                        context.read<CartBloc>().add(CartProductAdded(product));
+                        context.read<CartBloc>().add(AddCart(product));
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 backgroundColor: Colors.black,

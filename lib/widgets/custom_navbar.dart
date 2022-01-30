@@ -8,11 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CustomNavBar extends StatelessWidget {
   final String screen;
   final Product? product;
+  final GlobalKey<FormState>? globalKey;
 
   const CustomNavBar({
     Key? key,
     required this.screen,
     this.product,
+    this.globalKey
   }) : super(key: key);
 
   @override
@@ -43,7 +45,7 @@ class CustomNavBar extends StatelessWidget {
       case '/cart':
         return _buildGoToCheckoutNavBar(context);
       case '/checkout':
-        return _buildOrderNowNavBar(context);
+        return _buildOrderNowNavBar(context, globalKey!);
 
       default:
         _buildNavBar(context);
@@ -90,10 +92,9 @@ class CustomNavBar extends StatelessWidget {
             return IconButton(
               icon: const Icon(Icons.favorite, color: Colors.white),
               onPressed: () {
-                context.read<WishlistBloc>().add(WishlistProductAdded(product));
-                final snackBar =
-                    const SnackBar(content: Text('Added to your Wishlist!'));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                context.read<WishlistBloc>().add(AddWishlist(product));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Added to your Wishlist!')));
               },
             );
           } else {
@@ -113,7 +114,7 @@ class CustomNavBar extends StatelessWidget {
           if (state is CartLoaded) {
             return ElevatedButton(
               onPressed: () {
-                context.read<CartBloc>().add(CartProductAdded(product));
+                context.read<CartBloc>().add(AddCart(product));
                 Navigator.pushNamed(context, '/cart');
               },
               style: ElevatedButton.styleFrom(
@@ -153,7 +154,7 @@ class CustomNavBar extends StatelessWidget {
     ];
   }
 
-  List<Widget> _buildOrderNowNavBar(context) {
+  List<Widget> _buildOrderNowNavBar(context, GlobalKey<FormState> _key) {
     return [
       BlocBuilder<CheckoutBloc, CheckoutState>(
         builder: (context, state) {
@@ -165,9 +166,18 @@ class CustomNavBar extends StatelessWidget {
           if (state is CheckoutLoaded) {
             return ElevatedButton(
               onPressed: () {
-                context
-                    .read<CheckoutBloc>()
-                    .add(ConfirmCheckout(checkout: state.checkout));
+                if (_key.currentState!.validate()) {
+                  _key.currentState!.save();
+                  context
+                      .read<CheckoutBloc>()
+                      .add(ConfirmCheckout(checkout: state.checkout));
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Colors.green,
+                      duration: const Duration(seconds: 10),
+                      content: Text(
+                          'You have sucessfully ordered your items! ${state.checkout.products!.map((product) => product.name)}')));
+                }
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,

@@ -9,9 +9,49 @@ part 'cart_event.dart';
 part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc() : super(CartLoading());
+  CartBloc() : super(CartLoading()) {
+    on<StartCart>((event, emit) async {
+      emit(CartLoading());
+      try {
+        await Future<void>.delayed(const Duration(seconds: 1));
+        emit(const CartLoaded());
+      } catch (_) {
+        emit(CartError());
+      }
+    });
 
-  @override
+    on<AddCart>((event, emit) async {
+      final state = this.state;
+      if (state is CartLoaded) {
+        try {
+          emit(CartLoaded(
+            cart: Cart(
+              products: List.from(state.cart.products)..add(event.product),
+            ),
+          ));
+        } on Exception {
+          emit(CartError());
+        }
+      }
+    });
+
+    on<RemoveCart>((event, emit) async {
+      final state = this.state;
+      if (state is CartLoaded) {
+        try {
+          emit(CartLoaded(
+            cart: Cart(
+              products: List.from(state.cart.products)..remove(event.product),
+            ),
+          ));
+        } on Exception {
+          emit(CartError());
+        }
+      }
+    });
+  }
+
+/*  @override
   Stream<CartState> mapEventToState(
     CartEvent event,
   ) async* {
@@ -66,5 +106,5 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         yield CartError();
       }
     }
-  }
+  }*/
 }

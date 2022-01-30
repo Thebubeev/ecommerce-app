@@ -18,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Bloc.observer = SimpleBlocObserver();
+  BlocOverrides.runZoned(() {}, blocObserver: SimpleBlocObserver());
   runApp(const MyApp());
 }
 
@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => WishlistBloc()..add(WishlistStarted())),
-        BlocProvider(create: (context) => CartBloc()..add(CartStarted())),
+            create: (context) => WishlistBloc()..add(StarWishlist())),
+        BlocProvider(create: (context) => CartBloc()..add(StartCart())),
         BlocProvider(
             create: (context) =>
                 CategoryBloc(categoryRepository: CategoryRepository())

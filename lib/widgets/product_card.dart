@@ -95,7 +95,7 @@ class ProductCard extends StatelessWidget {
                                 onPressed: () {
                                   context
                                       .read<CartBloc>()
-                                      .add(CartProductAdded(product));
+                                      .add(AddCart(product));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               backgroundColor: Colors.black,
@@ -125,7 +125,7 @@ class ProductCard extends StatelessWidget {
                                     onPressed: () {
                                       context
                                           .read<WishlistBloc>()
-                                          .add(WishlistProductRemoved(product));
+                                          .add(RemoveWishlist(product));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               backgroundColor: Colors.red,

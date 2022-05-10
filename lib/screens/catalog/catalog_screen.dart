@@ -1,7 +1,5 @@
-import 'package:ecommerce_app_test/blocs/category/bloc/category_bloc.dart';
 import 'package:ecommerce_app_test/blocs/products/bloc/products_bloc.dart';
 import 'package:ecommerce_app_test/blocs/products/bloc/products_state.dart';
-import 'package:ecommerce_app_test/models/category_model.dart';
 import 'package:ecommerce_app_test/models/models.dart';
 import 'package:ecommerce_app_test/widgets/custom_appbar.dart';
 import 'package:ecommerce_app_test/widgets/custom_navbar.dart';
@@ -21,7 +19,7 @@ class CatalogScreen extends StatelessWidget {
 
   final Category category;
 
-  const CatalogScreen({
+   const CatalogScreen({
     required this.category,
   });
 
@@ -29,7 +27,7 @@ class CatalogScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: category.name),
-      bottomNavigationBar: const CustomNavBar(
+      bottomNavigationBar:  const CustomNavBar(
         screen: routeName,
       ),
       body: BlocBuilder<ProductBloc, ProductState>(

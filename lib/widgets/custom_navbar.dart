@@ -10,12 +10,9 @@ class CustomNavBar extends StatelessWidget {
   final Product? product;
   final GlobalKey<FormState>? globalKey;
 
-  const CustomNavBar({
-    Key? key,
-    required this.screen,
-    this.product,
-    this.globalKey
-  }) : super(key: key);
+  const CustomNavBar(
+      {Key? key, required this.screen, this.product, this.globalKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +36,8 @@ class CustomNavBar extends StatelessWidget {
       case '/catalog':
         return _buildNavBar(context);
       case '/wishlist':
+        return _buildNavBar(context);
+      case '/confirmation':
         return _buildNavBar(context);
       case '/product':
         return _buildAddToCartNavBar(context, product);
@@ -174,9 +173,10 @@ class CustomNavBar extends StatelessWidget {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       backgroundColor: Colors.green,
-                      duration: const Duration(seconds: 10),
+                      duration: const Duration(seconds: 3),
                       content: Text(
                           'You have sucessfully ordered your items! ${state.checkout.products!.map((product) => product.name)}')));
+                  Navigator.pushNamed(context, '/confirmation');
                 }
               },
               style: ElevatedButton.styleFrom(

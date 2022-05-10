@@ -2,8 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app_test/blocs/category/bloc/category_bloc.dart';
 import 'package:ecommerce_app_test/blocs/products/bloc/products_bloc.dart';
 import 'package:ecommerce_app_test/blocs/products/bloc/products_state.dart';
-import 'package:ecommerce_app_test/models/category_model.dart';
-import 'package:ecommerce_app_test/models/product_model.dart';
 import 'package:ecommerce_app_test/widgets/custom_appbar.dart';
 import 'package:ecommerce_app_test/widgets/custom_navbar.dart';
 import 'package:ecommerce_app_test/widgets/hero_carousel.dart';

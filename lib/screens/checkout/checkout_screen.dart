@@ -4,6 +4,7 @@ import 'package:ecommerce_app_test/widgets/custom_navbar.dart';
 import 'package:ecommerce_app_test/widgets/order_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:math';
 
 class CheckoutScreen extends StatefulWidget {
   static const String routeName = '/checkout';
@@ -30,6 +31,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final _zipController = TextEditingController();
 
   final _key = GlobalKey<FormState>();
+
+  Random random = Random();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +66,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           style: Theme.of(context).textTheme.headline3,
                         ),
                         _buildTextFormField((value) {
-                          context.read<CheckoutBloc>();
+                          context
+                              .read<CheckoutBloc>()
+                              .add(UpdateCheckout(email: value));
+                          context.read<CheckoutBloc>().add(UpdateCheckout(
+                              id: random.nextInt(1000).toString()));
                         }, context, 'Email', _emailController),
                         _buildTextFormField((value) {
                           context

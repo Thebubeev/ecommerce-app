@@ -37,6 +37,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       final state = this.state;
       if (state is CheckoutLoaded) {
         emit(CheckoutLoaded(
+          id: event.id ?? state.id,
           email: event.email ?? state.email,
           fullName: event.fullName ?? state.fullName,
           products: event.cart?.products ?? state.products,
